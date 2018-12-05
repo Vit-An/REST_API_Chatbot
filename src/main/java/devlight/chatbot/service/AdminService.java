@@ -48,7 +48,6 @@ public class AdminService {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-    @GetMapping("admins/{username}")
     public UserProfile getAdminProfile(@PathVariable(value = "username") String username,
                                        @RequestHeader("Authorization") String header
     ) {
@@ -63,14 +62,13 @@ public class AdminService {
                     .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
         }
 
-        String roleFromJwt = tokenProvider.getRoleFromJWT(header.split(" ")[1]);
+//        String roleFromJwt = tokenProvider.getRoleFromJWT(header.split(" ")[1]);
 
         UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getName(), user.getEmail());
 
         return userProfile;
     }
 
-    @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -86,7 +84,6 @@ public class AdminService {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
@@ -117,7 +114,7 @@ public class AdminService {
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "Admin registered successfully"));
     }
-    @DeleteMapping("/admins/{username}")
+
     public ResponseEntity deleteUser(@PathVariable(value = "username") String username) {
 
         Optional<User> users  = userRepository.findOneByUsername(username);
@@ -126,7 +123,6 @@ public class AdminService {
         return new ResponseEntity(username, HttpStatus.OK);
     }
 
-    @PatchMapping("/admins/{username}")
     public ResponseEntity updateAccount(@PathVariable(value = "username") String username,
                                         @RequestBody UpdateProfile updateProfile){
 

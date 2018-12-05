@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/usersapi/v1")
+@RequestMapping("/api/userapi/v1")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("users/{username}")
+    @GetMapping("/users/{username}")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username,
                                       @RequestHeader("Authorization") String header
     ) {

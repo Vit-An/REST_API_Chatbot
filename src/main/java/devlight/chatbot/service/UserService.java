@@ -48,8 +48,6 @@ public class UserService {
     @Autowired
     private JwtTokenProvider tokenProvider;
 
-
-    @GetMapping("users/{username}")
     public UserProfile getUserProfile(@PathVariable(value = "username") String username,
                                       @RequestHeader("Authorization") String header
     ) {
@@ -69,7 +67,6 @@ public class UserService {
         return userProfile;
     }
 
-    @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
@@ -85,7 +82,6 @@ public class UserService {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
-    @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
@@ -117,7 +113,6 @@ public class UserService {
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
 
-    @DeleteMapping("/users/{username}")
     public ResponseEntity deleteUser(@PathVariable(value = "username") String username) {
 
         Optional<User> users  = userRepository.findOneByUsername(username);
@@ -126,7 +121,6 @@ public class UserService {
         return new ResponseEntity(username, HttpStatus.OK);
     }
 
-    @PatchMapping("/users/{username}")
     public ResponseEntity updateAccount(@PathVariable(value = "username") String username,
                                         @RequestBody UpdateProfile updateProfile){
 

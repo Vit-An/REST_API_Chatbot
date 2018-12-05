@@ -18,7 +18,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @GetMapping("admins/{username}")
+    @GetMapping("/admins/{username}")
     public UserProfile getAdminProfile(@PathVariable(value = "username") String username,
                                        @RequestHeader("Authorization") String header
     ) {
